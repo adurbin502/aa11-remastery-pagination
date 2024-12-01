@@ -11,28 +11,13 @@ const bands = [
 ];
 
 module.exports = {
-  up: async (queryInterface, Sequelize) => {
-    /**
-     * Add seed commands here.
-     *
-     * Example:
-     * await queryInterface.bulkInsert('People', [{
-     *   name: 'John Doe',
-     *   isBetaMember: false
-     * }], {});
-    */
-   
-    await queryInterface.bulkInsert('Bands', bands)
+  up: async (queryInterface) => {
+    // Insert seed data for Bands
+    await queryInterface.bulkInsert('Bands', bands);
   },
-
-  down: async (queryInterface, Sequelize) => {
-    /**
-     * Add commands to revert seed here.
-     *
-     * Example:
-     * await queryInterface.bulkDelete('People', null, {});
-     */
-
-    await queryInterface.bulkDelete('Bands', { [Op.or]: bands })
+  down: async (queryInterface) => {
+    // Remove seed data for Bands
+    await queryInterface.bulkDelete('Bands', { [Op.or]: bands });
   }
 };
+

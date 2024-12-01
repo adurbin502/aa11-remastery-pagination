@@ -1,7 +1,5 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Musician extends Model {
     /**
@@ -10,23 +8,39 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      // Define association with Band
       Musician.belongsTo(models.Band, { foreignKey: 'bandId' });
-      Musician.belongsToMany(models.Instrument,
-        { through: models.MusicianInstrument,
-          foreignKey: 'musicianId',
-          otherKey: 'instrumentId'
-        }
-      );
+
+      // Define association with Instrument through MusicianInstrument
+      Musician.belongsToMany(models.Instrument, {
+        through: models.MusicianInstrument,
+        foreignKey: 'musicianId',
+        otherKey: 'instrumentId'
+      });
     }
-  };
+  }
   Musician.init({
-    firstName: DataTypes.STRING,
-    lastName: DataTypes.STRING,
-    bandId: DataTypes.INTEGER
+    // Define firstName with validation
+    firstName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: { len: [1, 255] }
+    },
+    // Define lastName with validation
+    lastName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: { len: [1, 255] }
+    },
+    // Define bandId to associate musician with a band
+    bandId: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    }
   }, {
     sequelize,
     modelName: 'Musician',
   });
   return Musician;
 };
+
